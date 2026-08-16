@@ -236,11 +236,11 @@
     .delay-3 { transition-delay: 0.28s; }
 
     /* cursor dot */
-    #cdot { display: none; position: fixed; width: 9px; height: 9px; border-radius: 50%; background: var(--accent); pointer-events: none; z-index: 9999; opacity: 0; transform: translate(-50%, -50%); transition: width 0.18s ease, height 0.18s ease, opacity 0.15s ease; will-change: left, top; }
+    #cdot { display: none; position: fixed; width: 9px; height: 9px; border-radius: 50%; background: var(--accent); border: 1.5px solid transparent; pointer-events: none; z-index: 9999; opacity: 0; transform: translate(-50%, -50%); transition: width 0.18s ease, height 0.18s ease, opacity 0.15s ease, background 0.18s ease, border-color 0.18s ease; will-change: left, top; }
     @media (pointer: fine) { #cdot { display: block; } }
     body.has-cursor { cursor: none; }
     body.has-cursor a, body.has-cursor button, body.has-cursor .card, body.has-cursor .pill, body.has-cursor .exp-tab { cursor: none; }
-    #cdot.expand { width: 26px; height: 26px; opacity: 0.15; }
+    #cdot.expand { width: 34px; height: 34px; background: transparent; border-color: var(--accent); opacity: 0.9; }
   </style>
 </head>
 <body>
@@ -767,8 +767,9 @@ x = self.pool(x); x = self.dropout_conv(x)<br>
       <p class="foot-name">Mahima Shah</p>
       <p class="foot-sub">always learning</p>
       <ul class="foot-links">
-        <li><a href="mailto:mahimashahxyz@gmail.com">Email</a></li>
+        <li><a href="mailto:mahima@mahimashah.xyz">Email</a></li>
         <li><a href="https://www.linkedin.com/in/shahmahima/" target="_blank" rel="noopener">LinkedIn</a></li>
+        <li><a href="https://x.com/mahimashahh" target="_blank" rel="noopener">X</a></li>
         <li><a href="https://github.com/mahima-shah" target="_blank" rel="noopener">GitHub</a></li>
         <li><a href="https://www.youtube.com/@mahimashah" target="_blank" rel="noopener">YouTube</a></li>
       </ul>

@@ -53,11 +53,11 @@
     body { background:var(--bg); color:var(--text); font-family:'DM Sans',-apple-system,sans-serif; font-weight:300; line-height:1.6; overflow-x:hidden; -webkit-font-smoothing:antialiased; }
 
     /* cursor dot */
-    #cdot { display:none; position:fixed; width:9px; height:9px; border-radius:50%; background:var(--accent); pointer-events:none; z-index:9999; opacity:0; transform:translate(-50%,-50%); transition:width .18s,height .18s,opacity .15s; left:-100px; top:-100px; }
+    #cdot { display:none; position:fixed; width:9px; height:9px; border-radius:50%; background:var(--accent); border:1.5px solid transparent; pointer-events:none; z-index:9999; opacity:0; transform:translate(-50%,-50%); transition:width .18s,height .18s,opacity .15s,background .18s,border-color .18s; left:-100px; top:-100px; }
     @media (pointer:fine) { #cdot { display:block; } }
     body.has-cursor { cursor:none; }
     body.has-cursor a, body.has-cursor button { cursor:none; }
-    #cdot.expand { width:26px; height:26px; opacity:0.15; }
+    #cdot.expand { width:34px; height:34px; background:transparent; border-color:var(--accent); opacity:0.9; }
 
     /* NAV */
     nav { position:fixed; top:0; left:0; right:0; z-index:800; height:52px; display:flex; align-items:center; justify-content:space-between; padding:0 52px; background:var(--bg-nav); backdrop-filter:var(--blur); -webkit-backdrop-filter:var(--blur); border-bottom:1px solid var(--border); }
@@ -456,8 +456,9 @@
       <p class="foot-name">Mahima Shah</p>
       <p class="foot-sub">always learning</p>
       <ul class="foot-links">
-        <li><a href="mailto:mahimashahxyz@gmail.com">Email</a></li>
+        <li><a href="mailto:mahima@mahimashah.xyz">Email</a></li>
         <li><a href="https://www.linkedin.com/in/shahmahima/" target="_blank" rel="noopener">LinkedIn</a></li>
+        <li><a href="https://x.com/mahimashahh" target="_blank" rel="noopener">X</a></li>
         <li><a href="https://github.com/mahima-shah" target="_blank" rel="noopener">GitHub</a></li>
         <li><a href="https://www.youtube.com/@mahimashah" target="_blank" rel="noopener">YouTube</a></li>
       </ul>
