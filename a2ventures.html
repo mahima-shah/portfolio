@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>A2Ventures — Mahima Shah</title>
+  <title>A2Ventures, Mahima Shah</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
@@ -11,7 +11,7 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; font-size: 16px; }
 
-    /* ── TOKENS — identical to home page ── */
+    /* ── TOKENS - identical to home page ── */
     :root {
       --bg:          #f5f5f7;
       --bg-card:     rgba(255,255,255,0.68);
@@ -419,6 +419,24 @@
     body.has-cursor .card,
     body.has-cursor .pill { cursor: none; }
     #cdot.expand { width: 34px; height: 34px; background: transparent; border-color: var(--accent); opacity: 0.9; }
+
+    /* ── Accessibility & motion polish ── */
+    a, button { -webkit-tap-highlight-color: transparent; }
+    a:focus-visible, button:focus-visible, .card:focus-visible,
+    .pill:focus-visible, .exp-tab:focus-visible, .flip-btn:focus-visible,
+    .flip-dot:focus-visible, .project-tile:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      html { scroll-behavior: auto !important; }
+    }
   </style>
 </head>
 <body>
@@ -516,12 +534,12 @@
 
       <div class="pull-quote reveal reveal-up delay-1">
         <p>"I only have a certain amount of free time and want to use it wisely."</p>
-        <cite>— Interview participant, Junior</cite>
+        <cite>Interview participant, Junior</cite>
       </div>
 
       <div class="pull-quote reveal reveal-up delay-1">
         <p>"I'm more likely to check out a spot if I'm already nearby than if I have to make a plan for it."</p>
-        <cite>— Interview participant, Senior</cite>
+        <cite>Interview participant, Senior</cite>
       </div>
 
       <p class="body-text reveal reveal-up delay-2" style="margin-top: 32px;">Two clear themes surfaced repeatedly: motivation was tied to social context, and the barrier to exploring wasn't lack of interest. It was the perceived cost in time, money, and effort. Students weren't incurious. They were rationally cautious with limited resources.</p>
@@ -787,7 +805,7 @@
 
       <div class="pull-quote reveal reveal-up delay-2" style="margin-top: 40px;">
         <p>"The solution meaningfully addresses the core user need of making Ann Arbor exploration more accessible and motivating. Students plan visits, earn points, and redeem rewards."</p>
-        <cite>— Project analysis, Milestone 4</cite>
+        <cite>Project analysis, Milestone 4</cite>
       </div>
     </div>
   </section>

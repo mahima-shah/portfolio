@@ -232,6 +232,24 @@
     body.has-cursor .card,
     body.has-cursor .pill { cursor: none; }
     #cdot.expand { width: 34px; height: 34px; background: transparent; border-color: var(--accent); opacity: 0.9; }
+
+    /* ── Accessibility & motion polish ── */
+    a, button { -webkit-tap-highlight-color: transparent; }
+    a:focus-visible, button:focus-visible, .card:focus-visible,
+    .pill:focus-visible, .exp-tab:focus-visible, .flip-btn:focus-visible,
+    .flip-dot:focus-visible, .project-tile:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      html { scroll-behavior: auto !important; }
+    }
   </style>
 </head>
 <body>

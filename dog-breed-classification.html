@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dog Breed Classification — Mahima Shah</title>
+  <title>Dog Breed Classification, Mahima Shah</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
@@ -241,6 +241,24 @@
     body.has-cursor { cursor: none; }
     body.has-cursor a, body.has-cursor button, body.has-cursor .card, body.has-cursor .pill, body.has-cursor .exp-tab { cursor: none; }
     #cdot.expand { width: 34px; height: 34px; background: transparent; border-color: var(--accent); opacity: 0.9; }
+
+    /* ── Accessibility & motion polish ── */
+    a, button { -webkit-tap-highlight-color: transparent; }
+    a:focus-visible, button:focus-visible, .card:focus-visible,
+    .pill:focus-visible, .exp-tab:focus-visible, .flip-btn:focus-visible,
+    .flip-dot:focus-visible, .project-tile:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      html { scroll-behavior: auto !important; }
+    }
   </style>
 </head>
 <body>
@@ -387,7 +405,7 @@
         </div>
       </div>
 
-      <div class="code-label reveal delay-2">model/target.py &mdash; forward pass</div>
+      <div class="code-label reveal delay-2">model/target.py - forward pass</div>
       <div class="code-block reveal delay-2">
 <span class="kw">def</span> forward(self, x: torch.Tensor) -> torch.Tensor:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;x = F.relu(self.conv1(x))<br>
