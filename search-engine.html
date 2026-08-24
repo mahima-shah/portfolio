@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Search Engine, Mahima Shah</title>
+  <title>Search Engine — Mahima Shah</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
@@ -217,12 +217,11 @@
       width: 9px; height: 9px;
       border-radius: 50%;
       background: var(--accent);
-      border: 1.5px solid transparent;
       pointer-events: none;
       z-index: 9999;
       opacity: 0;
       transform: translate(-50%, -50%);
-      transition: width 0.18s ease, height 0.18s ease, opacity 0.15s ease, background 0.18s ease, border-color 0.18s ease;
+      transition: width 0.18s ease, height 0.18s ease, opacity 0.15s ease;
       will-change: left, top;
     }
     @media (pointer: fine) {
@@ -233,25 +232,7 @@
     body.has-cursor button,
     body.has-cursor .card,
     body.has-cursor .pill { cursor: none; }
-    #cdot.expand { width: 34px; height: 34px; background: transparent; border-color: var(--accent); opacity: 0.9; }
-
-    /* ── Accessibility & motion polish ── */
-    a, button { -webkit-tap-highlight-color: transparent; }
-    a:focus-visible, button:focus-visible, .card:focus-visible,
-    .pill:focus-visible, .exp-tab:focus-visible, .flip-btn:focus-visible,
-    .flip-dot:focus-visible, .project-tile:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 3px;
-      border-radius: 4px;
-    }
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-      }
-      html { scroll-behavior: auto !important; }
-    }
+    #cdot.expand { width: 26px; height: 26px; opacity: 0.15; }
   </style>
 </head>
 <body>
@@ -277,11 +258,11 @@
     <div class="cs-hero-inner">
       <span class="cs-tag reveal">Systems Engineering</span>
       <h1 class="cs-title reveal delay-1">Search Engine</h1>
-      <p class="cs-subtitle reveal delay-2">A scalable search engine built from scratch over 28,000 Wikipedia documents, built with a MapReduce indexing pipeline, tf-idf and PageRank scoring, three parallel index servers, and a search UI that returns results in under 200ms.</p>
+      <p class="cs-subtitle reveal delay-2">A scalable search engine built from scratch over 28,000 Wikipedia documents — with a MapReduce indexing pipeline, tf-idf and PageRank scoring, three parallel index servers, and a search UI that returns results in under 200ms.</p>
       <div class="cs-meta reveal delay-3">
         <div class="cs-meta-item">
           <span class="cs-meta-label">Role</span>
-          <span class="cs-meta-value">Team of 3, Full Stack</span>
+          <span class="cs-meta-value">Team of 3 — Full Stack</span>
         </div>
         <div class="cs-meta-item">
           <span class="cs-meta-label">Context</span>
@@ -304,7 +285,7 @@
     <div class="container-inner container">
       <span class="section-label reveal"><span class="section-num">01</span>Overview</span>
       <h2 class="section-heading reveal delay-1">Building Google, <em>from scratch.</em></h2>
-      <p class="body-text reveal delay-2">Search engines look simple from the outside: type something, get results. Under the hood they're one of the most technically demanding systems in software: distributed data pipelines, information retrieval algorithms, multi-server architectures, and real-time query processing, all working together. This project built all of it from scratch.</p>
+      <p class="body-text reveal delay-2">Search engines look simple from the outside — type something, get results. Under the hood they're one of the most technically demanding systems in software: distributed data pipelines, information retrieval algorithms, multi-server architectures, and real-time query processing, all working together. This project built all of it from scratch.</p>
       <p class="body-text reveal delay-3">The system has three major components that work together in a pipeline: a MapReduce program that indexes 28,000+ Wikipedia pages into a segmented inverted index, three Flask index servers that load the index into memory and serve query results via REST API, and a search server that queries all three in parallel and returns ranked results to the user.</p>
 
       <div class="stat-strip">
@@ -333,11 +314,11 @@
     <div class="container-inner container">
       <span class="section-label reveal"><span class="section-num">02</span>Architecture</span>
       <h2 class="section-heading reveal delay-1">Three systems, <em>one pipeline.</em></h2>
-      <p class="body-text reveal delay-2">The architecture follows a service-oriented design. Each component is independent and communicates through well-defined interfaces: the MapReduce pipeline writes files that the index servers read, and the index servers expose a REST API that the search server calls. Separating concerns this way meant each piece could be built, tested, and scaled independently.</p>
+      <p class="body-text reveal delay-2">The architecture follows a service-oriented design. Each component is independent and communicates through well-defined interfaces — the MapReduce pipeline writes files that the index servers read, and the index servers expose a REST API that the search server calls. Separating concerns this way meant each piece could be built, tested, and scaled independently.</p>
 
       <div class="arch-diagram reveal delay-2">
         <div style="margin-bottom:32px;">
-          <p style="font-size:0.7rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-3);margin-bottom:20px;">Build time: run once to create the index</p>
+          <p style="font-size:0.7rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-3);margin-bottom:20px;">Build time — run once to create the index</p>
           <div class="arch-row">
             <div class="arch-box">
               <span class="arch-label">28K Wikipedia</span>
@@ -356,7 +337,7 @@
           </div>
         </div>
         <div style="border-top:1px solid var(--border);padding-top:32px;">
-          <p style="font-size:0.7rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-3);margin-bottom:20px;">Query time: live request/response</p>
+          <p style="font-size:0.7rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-3);margin-bottom:20px;">Query time — live request/response</p>
           <div class="arch-row">
             <div class="arch-box">
               <span class="arch-label">User Query</span>
@@ -399,7 +380,7 @@
       <span class="section-label reveal"><span class="section-num">03</span>MapReduce Pipeline</span>
       <h2 class="section-heading reveal delay-1">Turning 28,000 pages <em>into a searchable index.</em></h2>
       <p class="body-text reveal delay-2">The indexing pipeline is a chain of MapReduce jobs, each one transforming the data one step closer to a final inverted index. The first job counts documents. Subsequent jobs parse HTML, compute term frequencies, calculate tf-idf weights and normalization factors, and finally partition the output into three segments by document ID.</p>
-      <p class="body-text reveal delay-3" style="margin-top:14px;">The output is a segmented inverted index where each line represents one term followed by its IDF score and a list of documents containing it, each with term frequency and a normalization factor precomputed for fast cosine similarity at query time.</p>
+      <p class="body-text reveal delay-3" style="margin-top:14px;">The output is a segmented inverted index where each line represents one term followed by its IDF score and a list of documents containing it — each with term frequency and a normalization factor precomputed for fast cosine similarity at query time.</p>
 
       <div class="code-block reveal delay-2">
         <span class="cm"># Each line of the inverted index looks like this:</span><br>
@@ -425,7 +406,7 @@
             </svg>
           </div>
           <h3 class="insight-card-title">Precomputed normalization</h3>
-          <p class="insight-card-body">Document normalization factors are calculated during indexing, not at query time. This means cosine similarity at query time is a simple dot product and division, keeping latency low regardless of how many terms a document contains.</p>
+          <p class="insight-card-body">Document normalization factors are calculated during indexing — not at query time. This means cosine similarity at query time is a simple dot product and division, keeping latency low regardless of how many terms a document contains.</p>
         </div>
         <div class="insight-card reveal delay-1">
           <div class="insight-card-icon">
@@ -447,7 +428,7 @@
             </svg>
           </div>
           <h3 class="insight-card-title">Pipeline chaining</h3>
-          <p class="insight-card-body">Each MapReduce job reads from the previous job's output directory. This chaining keeps each step small and testable: the example crawl with 3 documents could be run and diffed against expected output before scaling to the full 28K document corpus.</p>
+          <p class="insight-card-body">Each MapReduce job reads from the previous job's output directory. This chaining keeps each step small and testable — the example crawl with 3 documents could be run and diffed against expected output before scaling to the full 28K document corpus.</p>
         </div>
       </div>
     </div>
@@ -492,13 +473,13 @@
             </svg>
           </div>
           <h3 class="insight-card-title">Adjustable weight</h3>
-          <p class="insight-card-body">The weight <code>w</code> is a URL parameter. The search UI exposes it as a slider, letting users tune results in real time, useful for comparing how much PageRank authority vs. query relevance should drive the ranking.</p>
+          <p class="insight-card-body">The weight <code>w</code> is a URL parameter. The search UI exposes it as a slider, letting users tune results in real time — useful for comparing how much PageRank authority vs. query relevance should drive the ranking.</p>
         </div>
       </div>
 
       <div class="pull-quote reveal delay-2">
-        <p>"Searching for 'michigan wolverine' with w=0.3 correctly surfaces the University of Michigan Wikipedia page, ranked first from a corpus of 28,000 documents."</p>
-        <cite>Verified against instructor solution</cite>
+        <p>"Searching for 'michigan wolverine' with w=0.3 correctly surfaces the University of Michigan Wikipedia page — ranked first from a corpus of 28,000 documents."</p>
+        <cite>— Verified against instructor solution</cite>
       </div>
     </div>
   </section>
@@ -508,7 +489,7 @@
     <div class="container-inner container">
       <span class="section-label reveal"><span class="section-num">05</span>Index & Search Servers</span>
       <h2 class="section-heading reveal delay-1">REST APIs, parallel threads, <em>fast results.</em></h2>
-      <p class="body-text reveal delay-2">Each of the three index servers loads its segment of the inverted index into memory at startup, once. All query requests then operate entirely in memory with no disk I/O, which is the key to sub-200ms latency. The Flask REST API accepts a query string, cleans and parses it the same way as the indexer, looks up matching documents, computes scores, and returns a ranked JSON response.</p>
+      <p class="body-text reveal delay-2">Each of the three index servers loads its segment of the inverted index into memory at startup — once. All query requests then operate entirely in memory with no disk I/O, which is the key to sub-200ms latency. The Flask REST API accepts a query string, cleans and parses it the same way as the indexer, looks up matching documents, computes scores, and returns a ranked JSON response.</p>
       <p class="body-text reveal delay-3" style="margin-top:14px;">The search server sits in front of all three index servers. When a query arrives, it fires requests to all three simultaneously using Python threads, then merges and re-ranks the combined result sets before returning the top 10 to the user.</p>
 
       <div class="cards-2col">
@@ -531,7 +512,7 @@
             </svg>
           </div>
           <h3 class="insight-card-title">Parallel index requests</h3>
-          <p class="insight-card-body">The search server uses Python threads to query all three index servers simultaneously rather than sequentially. Total query time is bounded by the slowest server, not the sum of all three: a simple but meaningful performance win at this scale.</p>
+          <p class="insight-card-body">The search server uses Python threads to query all three index servers simultaneously rather than sequentially. Total query time is bounded by the slowest server, not the sum of all three — a simple but meaningful performance win at this scale.</p>
         </div>
         <div class="insight-card reveal delay-1">
           <div class="insight-card-icon">
@@ -551,7 +532,7 @@
             </svg>
           </div>
           <h3 class="insight-card-title">Init scripts for orchestration</h3>
-          <p class="insight-card-body">Shell scripts handle starting, stopping, restarting, and status-checking all four servers (3 index + 1 search) as background processes with log file output. The search server validates that the index is running and the database exists before it starts, failing early with a clear error message otherwise.</p>
+          <p class="insight-card-body">Shell scripts handle starting, stopping, restarting, and status-checking all four servers (3 index + 1 search) as background processes with log file output. The search server validates that the index is running and the database exists before it starts — failing early with a clear error message otherwise.</p>
         </div>
       </div>
     </div>
@@ -562,7 +543,7 @@
     <div class="container-inner container">
       <span class="section-label reveal"><span class="section-num">06</span>Stack</span>
       <h2 class="section-heading reveal delay-1">What it's <em>built with.</em></h2>
-      <p class="body-text reveal delay-2">Every component was written in Python. No search library, no pre-built index, no shortcuts: the tf-idf calculation, the cosine similarity scoring, the MapReduce jobs, the REST API, the query parser, and the HTML document parser were all written from scratch.</p>
+      <p class="body-text reveal delay-2">Every component was written in Python. No search library, no pre-built index, no shortcuts — the tf-idf calculation, the cosine similarity scoring, the MapReduce jobs, the REST API, the query parser, and the HTML document parser were all written from scratch.</p>
       <div class="stack-row reveal delay-2">
         <span class="stack-pill">Python</span>
         <span class="stack-pill">Flask</span>
@@ -587,7 +568,7 @@
         <div class="reflect-card reveal delay-1">
           <span class="reflect-icon">⚡</span>
           <h4 class="reflect-title">Performance is about data structure decisions</h4>
-          <p class="reflect-body">The biggest latency win wasn't parallelism. It was loading the entire index into memory at startup. The decision of what to precompute (normalization factors, PageRank scores) versus what to compute at query time defined the system's speed ceiling before a single request was made.</p>
+          <p class="reflect-body">The biggest latency win wasn't parallelism — it was loading the entire index into memory at startup. The decision of what to precompute (normalization factors, PageRank scores) versus what to compute at query time defined the system's speed ceiling before a single request was made.</p>
         </div>
         <div class="reflect-card reveal delay-2">
           <span class="reflect-icon">🔗</span>
@@ -606,8 +587,8 @@
   <!-- NEXT PROJECT -->
   <div class="next-project">
     <p class="next-label reveal">Next project</p>
-    <h2 class="next-title reveal delay-1">Instagram Clone</h2>
-    <a href="instagram-clone.html" class="next-link reveal delay-2">
+    <h2 class="next-title reveal delay-1">Redpen</h2>
+    <a href="redpen.html" class="next-link reveal delay-2">
       View case study
       <span class="next-link-arrow">
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
@@ -622,9 +603,8 @@
       <p class="foot-name">Mahima Shah</p>
       <p class="foot-sub">always learning</p>
       <ul class="foot-links">
-        <li><a href="mailto:mahima@mahimashah.xyz">Email</a></li>
+        <li><a href="/cdn-cgi/l/email-protection#81ece0e9e8ece0f2e9e0e9f9f8fbc1e6ece0e8edafe2eeec">Email</a></li>
         <li><a href="https://www.linkedin.com/in/shahmahima/" target="_blank" rel="noopener">LinkedIn</a></li>
-        <li><a href="https://x.com/mahimashahh" target="_blank" rel="noopener">X</a></li>
         <li><a href="https://github.com/mahima-shah" target="_blank" rel="noopener">GitHub</a></li>
         <li><a href="https://www.youtube.com/@mahimashah" target="_blank" rel="noopener">YouTube</a></li>
       </ul>

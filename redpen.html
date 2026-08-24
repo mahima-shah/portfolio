@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Redpen — Mahima Shah</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    :root {
+      --bg:          #f5f5f7;
+      --bg-card:     rgba(255,255,255,0.68);
+      --bg-nav:      rgba(245,245,247,0.75);
+      --bg-tint:     rgba(123,45,62,0.04);
+      --border:      rgba(0,0,0,0.08);
+      --text:        #1d1d1f;
+      --text-2:      #515154;
+      --text-3:      #86868b;
+      --accent:      #7B2D3E;
+      --accent-hi:   #93394C;
+      --accent-dim:  rgba(123,45,62,0.09);
+      --accent-tag:  rgba(123,45,62,0.16);
+      --good:        #4caf7d;
+      --shadow-sm:   0 2px 16px rgba(0,0,0,0.06);
+      --shadow-md:   0 4px 32px rgba(0,0,0,0.09);
+      --shadow-lg:   0 20px 60px rgba(0,0,0,0.11);
+      --blur:        blur(24px);
+      --radius:      18px;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg:          #000000;
+        --bg-card:     rgba(28,28,30,0.82);
+        --bg-nav:      rgba(0,0,0,0.75);
+        --bg-tint:     rgba(184,83,104,0.07);
+        --border:      rgba(255,255,255,0.1);
+        --text:        #f5f5f7;
+        --text-2:      #a1a1a6;
+        --text-3:      #636366;
+        --accent:      #B85368;
+        --accent-hi:   #C96479;
+        --accent-dim:  rgba(184,83,104,0.12);
+        --accent-tag:  rgba(184,83,104,0.2);
+        --good:        #5fcf95;
+        --shadow-sm:   0 2px 16px rgba(0,0,0,0.35);
+        --shadow-md:   0 4px 32px rgba(0,0,0,0.45);
+        --shadow-lg:   0 20px 60px rgba(0,0,0,0.65);
+      }
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', -apple-system, sans-serif;
+      font-weight: 300;
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* cursor dot */
+    #cdot { display:none; position:fixed; width:9px; height:9px; border-radius:50%; background:var(--accent); pointer-events:none; z-index:9999; opacity:0; transform:translate(-50%,-50%); transition:width .18s,height .18s,opacity .15s; left:-100px; top:-100px; }
+    @media (pointer:fine) { #cdot { display:block; } }
+    body.has-cursor { cursor:none; }
+    body.has-cursor a, body.has-cursor button { cursor:none; }
+    #cdot.expand { width:26px; height:26px; opacity:0.15; }
+
+    /* NAV */
+    nav { position:fixed; top:0; left:0; right:0; z-index:800; height:52px; display:flex; align-items:center; justify-content:space-between; padding:0 52px; background:var(--bg-nav); backdrop-filter:var(--blur); -webkit-backdrop-filter:var(--blur); border-bottom:1px solid var(--border); }
+    @media (max-width:600px) { nav { padding:0 22px; } }
+    .nav-links { display:flex; gap:36px; list-style:none; align-items:center; }
+    .nav-links a { font-size:0.78rem; font-weight:400; letter-spacing:0.04em; color:var(--text-3); text-decoration:none; position:relative; transition:color 0.2s; }
+    .nav-links a::after { content:''; position:absolute; bottom:-2px; left:0; width:0; height:1px; background:var(--accent); transition:width 0.25s cubic-bezier(0.16,1,0.3,1); }
+    .nav-links a:hover { color:var(--text); }
+    .nav-links a:hover::after { width:100%; }
+    .nav-back { display:inline-flex; align-items:center; gap:6px; font-size:0.78rem; font-weight:400; letter-spacing:0.04em; color:var(--text-3); text-decoration:none; transition:color 0.2s; }
+    .nav-back:hover { color:var(--accent); }
+    .nav-back svg { transition:transform 0.2s; }
+    .nav-back:hover svg { transform:translateX(-3px); }
+
+    /* LAYOUT */
+    .page { padding-top: 52px; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 40px; }
+    @media (max-width:600px) { .container { padding: 0 22px; } }
+
+    /* HERO */
+    .cs-hero { padding: 80px 40px 72px; border-bottom: 1px solid var(--border); position: relative; overflow: hidden; }
+    @media (max-width:600px) { .cs-hero { padding: 60px 22px 52px; } }
+    .cs-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 70% 50%, var(--accent-dim), transparent 65%); pointer-events: none; }
+    .cs-hero-inner { max-width: 1100px; margin: 0 auto; position: relative; z-index: 1; }
+    .cs-tag { display: inline-block; font-size: 0.64rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); background: var(--accent-dim); border: 1px solid var(--accent-tag); padding: 4px 12px; border-radius: 100px; margin-bottom: 20px; }
+    .cs-title { font-family: 'DM Serif Display', Georgia, serif; font-size: clamp(2.8rem, 7vw, 5.5rem); font-weight: 600; line-height: 1.0; letter-spacing: -0.02em; color: var(--text); margin-bottom: 20px; }
+    .cs-title .tw-cursor { display:inline-block; width:3px; height:0.72em; margin-left:4px; background:var(--accent); vertical-align:-0.05em; animation:tw-blink 0.9s step-end infinite; }
+    .cs-title .tw-cursor.tw-cursor-fade { animation:none; opacity:0; transition:opacity 0.6s ease; }
+    @keyframes tw-blink { 50% { opacity:0; } }
+    .cs-subtitle { font-size: clamp(1rem, 2vw, 1.15rem); color: var(--text-2); line-height: 1.7; max-width: 680px; }
+    .cs-working-title { font-family:'DM Serif Display',Georgia,serif; font-style:italic; font-size:0.95rem; color:var(--text-3); margin-top:14px; }
+    .cs-meta { display: flex; flex-wrap: wrap; gap: 32px; padding-top: 36px; border-top: 1px solid var(--border); margin-top: 36px; }
+    .cs-meta-item { display: flex; flex-direction: column; gap: 4px; }
+    .cs-meta-label { font-size: 0.62rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-3); }
+    .cs-meta-value { font-size: 0.88rem; font-weight: 400; color: var(--text); }
+
+    /* SECTIONS */
+    .cs-section { padding: 80px 40px; border-bottom: 1px solid var(--border); }
+    .cs-section:last-of-type { border-bottom: none; }
+    @media (max-width:600px) { .cs-section { padding: 56px 22px; } }
+    .container-inner { max-width: 1100px; margin: 0 auto; }
+    .section-label { display: inline-flex; align-items:center; gap:10px; font-size: 0.62rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+    .section-num { font-size: 0.62rem; font-weight: 400; letter-spacing: 0.1em; color: var(--text-3); }
+    .section-heading { font-family: 'DM Serif Display', Georgia, serif; font-size: clamp(1.7rem, 3.6vw, 2.6rem); font-weight: 500; line-height: 1.14; letter-spacing: -0.015em; color: var(--text); margin-bottom: 22px; }
+    .section-heading em { font-style: italic; color: var(--accent); }
+    .body-text { font-size: 1rem; color: var(--text-2); line-height: 1.82; max-width: 680px; }
+    .body-text + .body-text { margin-top: 14px; }
+
+    /* STAT STRIP */
+    .stat-strip { display: flex; flex-wrap: wrap; gap: 2px; margin: 40px 0; }
+    .stat-card { flex: 1; min-width: 150px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px 20px; backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur); }
+    .stat-val { font-family: 'DM Serif Display', Georgia, serif; font-size: 1.9rem; font-weight: 500; color: var(--accent); line-height: 1; display: block; margin-bottom: 6px; }
+    .stat-desc { font-size: 0.78rem; font-weight: 400; color: var(--text-3); line-height: 1.4; }
+
+    /* CARDS */
+    .cards-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 36px; }
+    @media (max-width:640px) { .cards-2col { grid-template-columns: 1fr; } }
+    .cards-3col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-top: 36px; }
+    @media (max-width:720px) { .cards-3col { grid-template-columns: 1fr; } }
+    .insight-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 26px 24px; backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur); }
+    .insight-card-icon { width: 34px; height: 34px; border-radius: 10px; background: var(--accent-dim); border: 1px solid var(--accent-tag); display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
+    .insight-card-title { font-family: 'DM Serif Display', Georgia, serif; font-size: 1.05rem; font-weight: 500; color: var(--text); margin-bottom: 8px; line-height: 1.2; }
+    .insight-card-body { font-size: 0.87rem; color: var(--text-2); line-height: 1.7; }
+    .insight-card-body code, .body-text code { font-family:'SF Mono','Fira Code',monospace; font-size:0.82em; background:var(--accent-dim); padding:1px 5px; border-radius:4px; color:var(--accent); }
+
+    /* CODE BLOCK */
+    .code-block { margin: 26px 0; background: rgba(0,0,0,0.04); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; overflow-x: auto; font-family: 'SF Mono','Fira Code',monospace; font-size: 0.78rem; color: var(--text-2); line-height: 1.75; }
+    @media (prefers-color-scheme:dark) { .code-block { background: rgba(255,255,255,0.04); } }
+    .code-block .kw { color: var(--accent); }
+    .code-block .cm { color: var(--text-3); font-style: italic; }
+    .code-label { font-size: 0.64rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-3); margin: 26px 0 -12px; display:block; }
+
+    /* ARCH DIAGRAM */
+    .arch-diagram { margin: 32px 0; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 36px 32px; backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur); overflow-x: auto; }
+    .arch-row { display: flex; align-items: center; justify-content: flex-start; gap: 0; flex-wrap: nowrap; min-width: max-content; }
+    .arch-row.stacked { flex-direction: column; align-items: stretch; min-width: 0; }
+    .arch-box { background: var(--accent-dim); border: 1px solid var(--accent-tag); border-radius: 12px; padding: 14px 18px; text-align: center; min-width: 150px; flex-shrink: 0; }
+    .arch-box.highlight { background: var(--accent); border-color: var(--accent); }
+    .arch-box.highlight .arch-label { color: #fff; }
+    .arch-box.highlight .arch-sub { color: rgba(255,255,255,0.7); }
+    .arch-label { font-family: 'DM Serif Display', Georgia, serif; font-size: 0.9rem; font-weight: 500; color: var(--text); display: block; margin-bottom: 4px; }
+    .arch-sub { font-size: 0.68rem; color: var(--text-3); letter-spacing: 0.03em; display: block; }
+    .arch-arrow { color: var(--accent); font-size: 1.1rem; padding: 0 10px; flex-shrink: 0; opacity: 0.6; }
+    .arch-arrow.down { padding: 8px 0; text-align: center; transform: rotate(90deg); align-self: center; }
+    @media (max-width:640px) { .arch-diagram { padding: 28px 18px; } }
+
+    /* ENDPOINT GRID */
+    .endpoint-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px; margin-top: 24px; }
+    .endpoint-pill { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; display: flex; flex-direction: column; gap: 3px; backdrop-filter: var(--blur); }
+    .endpoint-path { font-family: 'SF Mono','Fira Code',monospace; font-size: 0.78rem; color: var(--accent); }
+    .endpoint-desc { font-size: 0.72rem; color: var(--text-3); line-height: 1.4; }
+
+    /* PULL QUOTE */
+    .pull-quote { margin: 32px 0; padding: 26px 30px; border-left: 3px solid var(--accent); background: var(--bg-tint); border-radius: 0 var(--radius) var(--radius) 0; max-width: 680px; }
+    .pull-quote p { font-family: 'DM Serif Display', Georgia, serif; font-style: italic; font-size: 1.08rem; color: var(--text); line-height: 1.58; }
+
+    /* STACK PILLS */
+    .stack-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
+    .stack-pill { font-size: 0.75rem; font-weight: 400; color: var(--text-2); background: var(--bg-card); border: 1px solid var(--border); padding: 5px 14px; border-radius: 100px; backdrop-filter: var(--blur); }
+
+    /* PROCESS STEPS */
+    .process-steps { display: flex; flex-direction: column; gap: 2px; margin-top: 36px; }
+    .process-step { display: grid; grid-template-columns: 48px 1fr; gap: 20px; align-items: start; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 26px 30px; backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur); }
+    .step-num { font-family: 'DM Serif Display', Georgia, serif; font-size: 1.3rem; font-weight: 500; color: var(--accent); line-height: 1; padding-top: 2px; }
+    .step-title { font-family: 'DM Serif Display', Georgia, serif; font-size: 1rem; font-weight: 500; color: var(--text); margin-bottom: 6px; }
+    .step-body { font-size: 0.86rem; color: var(--text-2); line-height: 1.72; }
+
+    /* FEATURE EXPLORER (interactive tabs) */
+    .exp-block { margin: 32px 0; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 30px; backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur); }
+    @media (max-width:600px) { .exp-block { padding: 20px; } }
+    .exp-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 26px; }
+    .exp-tab { font-size: 0.78rem; font-weight: 500; color: var(--text-2); background: transparent; border: 1px solid var(--border); padding: 8px 16px; border-radius: 100px; cursor: pointer; transition: all 0.2s; font-family: 'DM Sans', sans-serif; }
+    .exp-tab:hover { border-color: var(--accent-tag); color: var(--text); }
+    .exp-tab.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .exp-panel { display: none; }
+    .exp-panel.active { display: block; animation: fadein-panel 0.35s ease; }
+    @keyframes fadein-panel { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+    .exp-panel-title { font-family: 'DM Serif Display', Georgia, serif; font-size: 1.2rem; font-weight: 500; color: var(--text); margin-bottom: 10px; }
+    .exp-panel-body { font-size: 0.9rem; color: var(--text-2); line-height: 1.75; max-width: 640px; margin-bottom: 18px; }
+    .exp-pill-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .exp-pill { font-size: 0.72rem; font-weight: 400; color: var(--accent); background: var(--accent-dim); border: 1px solid var(--accent-tag); padding: 4px 11px; border-radius: 100px; }
+
+    /* SEVERITY CHIPS (monochrome by weight, not hue) */
+    .sev-chip { display: inline-flex; align-items: center; gap: 6px; font-size: 0.66rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; border-radius: 100px; }
+    .sev-high { background: var(--accent); color: #fff; }
+    .sev-medium { background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent-tag); }
+    .sev-low { background: transparent; color: var(--text-3); border: 1px solid var(--border); }
+
+    /* FINDING CARD */
+    .finding-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px 24px; margin-top: 14px; backdrop-filter: var(--blur); }
+    .finding-top { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; flex-wrap: wrap; }
+    .finding-title { font-family: 'DM Serif Display', Georgia, serif; font-size: 1rem; font-weight: 500; color: var(--text); }
+    .finding-body { font-size: 0.85rem; color: var(--text-2); line-height: 1.7; }
+    .finding-tag { font-size: 0.64rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-3); }
+
+    /* INTERACTIVE SUGGESTED-CHANGE DEMO */
+    .diff-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur); margin: 32px 0; transition: opacity 0.3s; }
+    .diff-head { display: flex; align-items: center; justify-content: space-between; padding: 18px 24px; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 10px; }
+    .diff-head-title { font-family: 'DM Serif Display', Georgia, serif; font-size: 1rem; font-weight: 500; color: var(--text); }
+    .diff-status { font-size: 0.62rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-3); padding: 4px 10px; border: 1px solid var(--border); border-radius: 100px; transition: all 0.25s; }
+    .diff-status.pending { color: var(--accent); border-color: var(--accent-tag); background: var(--accent-dim); }
+    .diff-status.accepted { color: var(--good); border-color: var(--good); background: transparent; }
+    .diff-status.rejected { color: var(--text-3); }
+    .diff-body { padding: 24px; }
+    .diff-line { display: flex; gap: 12px; padding: 12px 14px; border-radius: 10px; margin-bottom: 8px; font-size: 0.88rem; line-height: 1.6; }
+    .diff-removed { background: rgba(134,134,139,0.08); color: var(--text-3); text-decoration: line-through; text-decoration-thickness: 1px; }
+    .diff-added { background: var(--accent-dim); color: var(--text); }
+    .diff-marker { font-family: 'SF Mono','Fira Code',monospace; font-size: 0.78rem; flex-shrink: 0; opacity: 0.7; }
+    .diff-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--border); }
+    @media (max-width:560px) { .diff-meta { grid-template-columns: 1fr; } }
+    .diff-meta-label { font-size: 0.62rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-3); margin-bottom: 4px; }
+    .diff-meta-val { font-size: 0.85rem; color: var(--text-2); line-height: 1.6; }
+    .diff-actions { display: flex; gap: 10px; padding: 0 24px 24px; }
+    .diff-btn { font-family: 'DM Sans', sans-serif; font-size: 0.8rem; font-weight: 500; padding: 9px 18px; border-radius: 100px; cursor: pointer; border: 1px solid var(--border); background: transparent; color: var(--text-2); transition: all 0.2s; }
+    .diff-btn:hover { border-color: var(--accent-tag); color: var(--text); }
+    .diff-btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .diff-btn.primary:hover { background: var(--accent-hi); }
+    .diff-btn:disabled { opacity: 0.4; pointer-events: none; }
+    .diff-note { font-size: 0.72rem; color: var(--text-3); padding: 0 24px 22px; line-height: 1.6; }
+    .diff-history-line { display: none; align-items: center; gap: 8px; padding: 0 24px 22px; font-size: 0.76rem; color: var(--text-3); }
+    .diff-history-line.show { display: flex; }
+    .diff-history-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--good); flex-shrink: 0; }
+    .diff-history-dot.rej { background: var(--text-3); }
+
+    /* REFLECT */
+    .reflect-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 22px; backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur); }
+    .reflect-icon { font-size: 1.15rem; margin-bottom: 12px; display: block; }
+    .reflect-title { font-family: 'DM Serif Display', Georgia, serif; font-size: 1rem; font-weight: 500; color: var(--text); margin-bottom: 8px; }
+    .reflect-body { font-size: 0.83rem; color: var(--text-2); line-height: 1.7; }
+
+    /* SCOPE NOTE */
+    .scope-note { background: var(--bg-tint); border: 1px solid var(--accent-tag); border-radius: var(--radius); padding: 22px 26px; margin-top: 28px; }
+    .scope-note-label { font-size: 0.62rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; display: block; }
+    .scope-note p { font-size: 0.87rem; color: var(--text-2); line-height: 1.75; }
+
+    /* NEXT PROJECT */
+    .next-project { padding: 72px 40px; text-align: center; border-top: 1px solid var(--border); }
+    .next-label { font-size: 0.64rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-3); margin-bottom: 12px; }
+    .next-title { font-family: 'DM Serif Display', Georgia, serif; font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 500; color: var(--text); margin-bottom: 24px; }
+    .next-link { display: inline-flex; align-items: center; gap: 8px; font-size: 0.82rem; font-weight: 400; color: var(--text); text-decoration: none; transition: gap 0.25s; }
+    .next-link:hover { gap: 14px; }
+    .next-link-arrow { width: 30px; height: 30px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; transition: transform 0.25s; }
+    .next-link:hover .next-link-arrow { transform: scale(1.1); }
+
+    /* FOOTER */
+    footer { border-top: 1px solid var(--border); padding: 48px 40px 36px; text-align: center; }
+    .foot-inner { max-width: 1100px; margin: 0 auto; }
+    .foot-name { font-family:'DM Serif Display',Georgia,serif; font-size:1.5rem; font-weight:500; color:var(--text); margin-bottom:4px; }
+    .foot-sub { font-family:'DM Serif Display',Georgia,serif; font-style:italic; font-weight:300; font-size:0.9rem; color:var(--text-3); margin-bottom:24px; }
+    .foot-links { display:flex; gap:28px; justify-content:center; list-style:none; flex-wrap:wrap; margin-bottom:20px; }
+    .foot-links a { font-size:0.78rem; font-weight:400; letter-spacing:0.04em; color:var(--text-2); text-decoration:none; transition:color 0.2s; }
+    .foot-links a:hover { color:var(--accent); }
+    .foot-copy { font-size:0.64rem; color:var(--text-3); letter-spacing:0.06em; }
+
+    .reveal { opacity: 1; transform: none; }
+    .delay-1 { transition-delay: 0.08s; }
+    .delay-2 { transition-delay: 0.18s; }
+    .delay-3 { transition-delay: 0.28s; }
+  </style>
+</head>
+<body>
+<div id="cdot"></div>
+<div class="page">
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-back">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Back
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="index.html#work">Work</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <header class="cs-hero">
+    <div class="cs-hero-inner">
+      <span class="cs-tag reveal">Full Stack Engineering</span>
+      <h1 class="cs-title reveal delay-1">Redpen</h1>
+      <p class="cs-subtitle reveal delay-2">An AI-powered Microsoft Word add-in that brings drafting, review, rewriting, summarization, and templating directly into a lawyer's document, built on Office.js, Node/Express, and the Claude API. Its centerpiece is an independent suggested-changes engine: every AI edit is proposed, reviewed, and explicitly accepted or rejected before it ever touches the document.</p>
+      <p class="cs-working-title reveal delay-2">Every mark a lawyer makes on paper starts as a strike-through and a note in the margin. Redpen rebuilds that instinct as a controlled AI review layer.</p>
+      <div class="cs-meta reveal delay-3">
+        <div class="cs-meta-item">
+          <span class="cs-meta-label">Role</span>
+          <span class="cs-meta-value">Solo, Full Stack</span>
+        </div>
+        <div class="cs-meta-item">
+          <span class="cs-meta-label">Context</span>
+          <span class="cs-meta-value">Independent prototype, legal tech</span>
+        </div>
+        <div class="cs-meta-item">
+          <span class="cs-meta-label">Timeline</span>
+          <span class="cs-meta-value">2026</span>
+        </div>
+        <div class="cs-meta-item">
+          <span class="cs-meta-label">Stack</span>
+          <span class="cs-meta-value">Node.js &middot; Express &middot; Office.js &middot; Claude API</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 01 OVERVIEW -->
+  <section class="cs-section">
+    <div class="container-inner container">
+      <span class="section-label reveal"><span class="section-num">01</span>Overview</span>
+      <h2 class="section-heading reveal delay-1">AI that lives inside the document, <em>not next to it.</em></h2>
+      <p class="body-text reveal delay-2">Legal professionals spend much of their time moving between documents, precedents, internal standards, templates, and drafting tools. A general-purpose AI chat interface can generate legal text, but it introduces friction when the real work is happening inside Word: copy the clause out, explain its context, copy the answer back, find the right paragraph again, manually manage the revision.</p>
+      <p class="body-text reveal delay-3">Redpen is a Word task-pane add-in designed around how lawyers actually work: select a clause, ask the AI to analyze or modify it, inspect the result, navigate back to the relevant language, and decide what should ultimately change. It evolved into a multi-feature document workspace with structured AI outputs, document-aware actions, reusable legal templates, playbook-assisted review, and an independent lifecycle for controlling every AI-generated edit.</p>
+
+      <div class="stat-strip reveal delay-1">
+        <div class="stat-card">
+          <span class="stat-val">5</span>
+          <span class="stat-desc">Word-integrated workflows: Summarize, Rewrite, Simplify, Review, Templates</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-val">7</span>
+          <span class="stat-desc">backend API endpoints, each with its own prompt, schema, and validation logic</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-val">6-stage</span>
+          <span class="stat-desc">suggested-change lifecycle from Review through History</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-val">1</span>
+          <span class="stat-desc">shared editing seam every feature's document mutation routes through</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 ARCHITECTURE -->
+  <section class="cs-section">
+    <div class="container-inner container">
+      <span class="section-label reveal"><span class="section-num">02</span>Architecture</span>
+      <h2 class="section-heading reveal delay-1">A thin, deliberate proxy <em>between Word and the model.</em></h2>
+      <p class="body-text reveal delay-2">The add-in runs as a Word task pane. The frontend talks to the live document through Office.js and the Word JavaScript API: reading the current selection, inspecting the whole document, searching for specific clauses, inserting paragraphs, replacing ranges, and moving the Word selection to relevant content. AI work is separated into backend endpoints, one per feature, each with its own prompt and response schema, so the frontend renders feature-specific interfaces instead of dumping every AI response into a chat bubble.</p>
+
+      <div class="arch-diagram reveal delay-2">
+        <div class="arch-row stacked">
+          <div class="arch-box"><span class="arch-label">Word Desktop</span><span class="arch-sub">task pane, loads manifest.xml</span></div>
+          <span class="arch-arrow down">&#8594;</span>
+          <div class="arch-box"><span class="arch-label">taskpane.js</span><span class="arch-sub">Office.js, reads/writes the live document via Word.run()</span></div>
+          <span class="arch-arrow down">&#8594;</span>
+          <div class="arch-box highlight"><span class="arch-label">server.js</span><span class="arch-sub">Express, holds the API key, builds feature-specific prompts</span></div>
+          <span class="arch-arrow down">&#8594;</span>
+          <div class="arch-box"><span class="arch-label">Claude API</span><span class="arch-sub">structured response, rendered into feature-specific UI</span></div>
+        </div>
+      </div>
+
+      <p class="body-text reveal delay-2">Every user action is scoped to one of seven endpoints, so a bug in one workflow can't leak into another:</p>
+
+      <div class="endpoint-grid reveal delay-2">
+        <div class="endpoint-pill"><span class="endpoint-path">/api/summarize</span><span class="endpoint-desc">structured summary, key points, risks</span></div>
+        <div class="endpoint-pill"><span class="endpoint-path">/api/rewrite</span><span class="endpoint-desc">preset or free-text drafting instructions</span></div>
+        <div class="endpoint-pill"><span class="endpoint-path">/api/simplify</span><span class="endpoint-desc">audience- and tone-aware explanation</span></div>
+        <div class="endpoint-pill"><span class="endpoint-path">/api/review</span><span class="endpoint-desc">structured findings, optionally playbook-aware</span></div>
+        <div class="endpoint-pill"><span class="endpoint-path">/api/suggest-revision</span><span class="endpoint-desc">turns a finding into a proposed edit</span></div>
+        <div class="endpoint-pill"><span class="endpoint-path">/api/detect-placeholders</span><span class="endpoint-desc">regex + LLM template field detection</span></div>
+        <div class="endpoint-pill"><span class="endpoint-path">/api/autofill-template</span><span class="endpoint-desc">fills template fields from document context</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 FEATURE EXPLORER -->
+  <section class="cs-section">
+    <div class="container-inner container">
+      <span class="section-label reveal"><span class="section-num">03</span>Feature Explorer</span>
+      <h2 class="section-heading reveal delay-1">Five tools, <em>five different jobs.</em></h2>
+      <p class="body-text reveal delay-2">Each feature is scoped narrowly on purpose. Summarize never rewrites. Rewrite never explains. Simplify is structurally prevented from producing clause-shaped output. Every one is selection-aware: if text is selected in Word, only that content is sent; if nothing is selected, the add-in falls back to the full document automatically.</p>
+
+      <div class="exp-block reveal delay-2">
+        <div class="exp-tabs" id="feature-tabs">
+          <button class="exp-tab active" data-feature="summarize">Summarize</button>
+          <button class="exp-tab" data-feature="rewrite">Rewrite</button>
+          <button class="exp-tab" data-feature="simplify">Simplify</button>
+          <button class="exp-tab" data-feature="review">Review</button>
+          <button class="exp-tab" data-feature="templates">Templates</button>
+        </div>
+
+        <div class="exp-panel active" data-panel="summarize">
+          <h3 class="exp-panel-title">Summarize</h3>
+          <p class="exp-panel-body">Returns a structured result rather than one block of prose: a plain-English <strong>Summary</strong>, extracted <strong>Key Points</strong>, and any <strong>Potential Risks</strong> identified in the text, each rendered as its own section so it can be scanned rather than read. On insertion, the add-in first tries to relocate the original summarized selection as an anchor, and falls back to the current selection if that text can no longer be found.</p>
+          <div class="exp-pill-row">
+            <span class="exp-pill">Short / Medium / Detailed</span>
+            <span class="exp-pill">Selection-aware</span>
+            <span class="exp-pill">Structured JSON output</span>
+          </div>
+        </div>
+
+        <div class="exp-panel" data-panel="rewrite">
+          <h3 class="exp-panel-title">Rewrite</h3>
+          <p class="exp-panel-body">Presets like More Concise, More Formal, Plain English, Better Flow, Buyer-Friendly, and Supplier-Friendly remain fully editable before sending, so a preset acts as a starting point rather than a fixed command. The result can be copied, used to replace the selection, or inserted below the original for side-by-side comparison. The add-in retains a link between the generated revision and the clause that produced it, even after the user's cursor moves elsewhere.</p>
+          <div class="exp-pill-row">
+            <span class="exp-pill">6 quick presets</span>
+            <span class="exp-pill">Free-text instructions</span>
+            <span class="exp-pill">Replace or insert below</span>
+          </div>
+        </div>
+
+        <div class="exp-panel" data-panel="simplify">
+          <h3 class="exp-panel-title">Simplify</h3>
+          <p class="exp-panel-body">"Simple" means something different depending on who's reading. Users choose a target audience, client, executive, sales, or a custom audience typed in directly, plus a tone (Professional, Conversational, Very Simple). Changing either control changes the actual instruction sent to the model, not just a UI label. Simplify is structurally prevented from reading like a redraft: it explains, it doesn't produce new legal language.</p>
+          <div class="exp-pill-row">
+            <span class="exp-pill">Custom audience field</span>
+            <span class="exp-pill">Adjustable tone</span>
+            <span class="exp-pill">Never clause-shaped</span>
+          </div>
+        </div>
+
+        <div class="exp-panel" data-panel="review">
+          <h3 class="exp-panel-title">Review</h3>
+          <p class="exp-panel-body">Analyzes text against configurable review types, general legal risk, missing clauses, ambiguities, inconsistencies, business risk, and optionally a named firm playbook. Returns structured findings with severity, explanation, and a recommendation. Review never edits anything directly; suggesting a revision is a separate, explicit step per finding, covered in section 05.</p>
+          <div class="exp-pill-row">
+            <span class="exp-pill">6 review types</span>
+            <span class="exp-pill">Playbook-aware</span>
+            <span class="exp-pill">Jump-to-clause navigation</span>
+          </div>
+        </div>
+
+        <div class="exp-panel" data-panel="templates">
+          <h3 class="exp-panel-title">Templates</h3>
+          <p class="exp-panel-body">Two flows: turning a live document into a reusable template with <code>{{PLACEHOLDER}}</code> tokens, and filling a saved template back in. Opening Fill Template first scans the current document for existing tokens; if the document already contains placeholders, it becomes the source of truth immediately, no need to re-select the same template from a list. Covered in full in section 06.</p>
+          <div class="exp-pill-row">
+            <span class="exp-pill">Two-pass detection</span>
+            <span class="exp-pill">AI autofill</span>
+            <span class="exp-pill">Incremental refill</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 AI-POWERED REVIEW & PLAYBOOKS -->
+  <section class="cs-section">
+    <div class="container-inner container">
+      <span class="section-label reveal"><span class="section-num">04</span>Review &amp; Playbooks</span>
+      <h2 class="section-heading reveal delay-1">Findings, not a verdict.</h2>
+      <p class="body-text reveal delay-2">Instead of one paragraph saying whether a contract "looks fine," Review returns structured findings, each with a severity, title, explanation, recommendation, source, and the exact clause text that triggered it. Findings render as expandable cards rather than chat text, so a lawyer can triage by severity before reading any explanation in full.</p>
+
+      <div class="finding-card reveal delay-2">
+        <div class="finding-top">
+          <span class="sev-chip sev-high">High</span>
+          <span class="finding-tag">Playbook Requirement</span>
+        </div>
+        <h4 class="finding-title">Limitation of liability cap is uncapped for indirect damages</h4>
+        <p class="finding-body">The current clause excludes indirect and consequential damages but does not cap direct damages, which conflicts with the firm's standard liability position. Playbook rule LP-04 requires a direct-damages cap tied to fees paid in the preceding 12 months.</p>
+      </div>
+      <div class="finding-card reveal delay-2">
+        <div class="finding-top">
+          <span class="sev-chip sev-medium">Medium</span>
+          <span class="finding-tag">Best Practice</span>
+        </div>
+        <h4 class="finding-title">Notice period for termination is ambiguous</h4>
+        <p class="finding-body">"Reasonable notice" is used without a defined number of days, which invites dispute over what constitutes compliance. Most comparable agreements specify 30 or 60 days explicitly.</p>
+      </div>
+      <div class="finding-card reveal delay-2">
+        <div class="finding-top">
+          <span class="sev-chip sev-low">Low</span>
+          <span class="finding-tag">Best Practice</span>
+        </div>
+        <h4 class="finding-title">Governing law clause omits venue</h4>
+        <p class="finding-body">Governing law is specified, but no exclusive venue or forum is named for disputes, which can complicate enforcement.</p>
+      </div>
+
+      <p class="body-text reveal delay-2" style="margin-top:28px;">When playbook review is enabled, a finding can carry the specific internal rule that triggered it, shown alongside the requirement, how the current document compares, and the result of that comparison. This lets the AI explain <em>why</em> something was flagged rather than simply asserting that a clause is a problem, and it means a suggested revision can reuse the same playbook rule as context for the replacement language.</p>
+
+      <div class="cards-2col reveal delay-2">
+        <div class="insight-card">
+          <div class="insight-card-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v4l3 2" stroke="var(--accent)" stroke-width="1.3" stroke-linecap="round"/><circle cx="8" cy="8" r="5.5" stroke="var(--accent)" stroke-width="1.2"/></svg></div>
+          <h3 class="insight-card-title">Jump to Clause, with fallback strategies</h3>
+          <p class="insight-card-body">Each finding retains the underlying clause text that caused it. Selecting Jump to Clause searches the live document for that text and moves the Word selection there directly. Since generated or normalized text doesn't always exactly match Word's underlying representation, the search runs multiple strategies, exact match, normalized whitespace, and shorter candidate snippets, and if none succeed, the interface disables navigation rather than silently jumping somewhere wrong.</p>
+        </div>
+        <div class="insight-card">
+          <div class="insight-card-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="3" y="3" width="10" height="10" rx="1.5" stroke="var(--accent)" stroke-width="1.2"/><path d="M6 8l2 2 3-3" stroke="var(--accent)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <h3 class="insight-card-title">Best Practice vs. Playbook Requirement</h3>
+          <p class="insight-card-body">The interface distinguishes findings sourced from general legal drafting guidance versus a firm's own internal standard, so a reviewer knows immediately whether a flag reflects broad convention or a rule the firm has specifically decided matters.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 SUGGESTED CHANGES LIFECYCLE -->
+  <section class="cs-section">
+    <div class="container-inner container">
+      <span class="section-label reveal"><span class="section-num">05</span>The Suggested-Changes Engine</span>
+      <h2 class="section-heading reveal delay-1">Why not just use <em>Track Changes?</em></h2>
+      <p class="body-text reveal delay-2">This was the hardest, and most rewritten, problem in the project. The original model was simple: an AI response would replace text in the document immediately. That worked in the happy path, but any interruption, a slow response, the user editing nearby text, closing the task pane mid-generation, could leave the document in a state nobody asked for. For a legal tool, a corrupted document is worse than a missing feature.</p>
+      <p class="body-text reveal delay-3">The redesign introduces a real approval boundary between two operations that used to be one: <em>"the AI thinks this should change"</em> is no longer the same event as <em>"the document changes."</em></p>
+
+      <div class="process-steps reveal delay-2">
+        <div class="process-step">
+          <span class="step-num">1</span>
+          <div><h4 class="step-title">Review</h4><p class="step-body">A finding is surfaced with severity, explanation, and recommendation. Nothing in the document has changed yet.</p></div>
+        </div>
+        <div class="process-step">
+          <span class="step-num">2</span>
+          <div><h4 class="step-title">Suggest Revision</h4><p class="step-body">An explicit user action sends the clause, issue, explanation, and any playbook context to a dedicated revision endpoint.</p></div>
+        </div>
+        <div class="process-step">
+          <span class="step-num">3</span>
+          <div><h4 class="step-title">Pending Change</h4><p class="step-body">The response becomes a <code>SuggestedChange</code> object: original text, proposed text, reasoning, source, and document location, held in a queue rather than applied.</p></div>
+        </div>
+        <div class="process-step">
+          <span class="step-num">4</span>
+          <div><h4 class="step-title">Accept / Reject</h4><p class="step-body">The user reviews the proposed edit side by side with the original and makes the call. Only Accept touches the document.</p></div>
+        </div>
+        <div class="process-step">
+          <span class="step-num">5</span>
+          <div><h4 class="step-title">Document Update</h4><p class="step-body">On accept, the original clause is relocated in the live document and replaced. If it can no longer be found, the change is not marked accepted.</p></div>
+        </div>
+        <div class="process-step">
+          <span class="step-num">6</span>
+          <div><h4 class="step-title">History</h4><p class="step-body">Nothing is deleted from the queue on reject. Every resolved change, accepted or rejected, moves to a timestamped history rather than disappearing.</p></div>
+        </div>
+      </div>
+
+      <p class="code-label reveal delay-2">Try it: an example finding turned into a suggested change</p>
+      <div class="diff-card reveal delay-2" id="diff-demo">
+        <div class="diff-head">
+          <span class="diff-head-title">Limitation of liability, direct damages cap</span>
+          <span class="diff-status pending" id="diff-status">Pending</span>
+        </div>
+        <div class="diff-body">
+          <div class="diff-line diff-removed"><span class="diff-marker">&minus;</span><span>In no event shall either party's liability exceed the amounts actually paid, except for indirect or consequential damages, which are excluded entirely.</span></div>
+          <div class="diff-line diff-added"><span class="diff-marker">+</span><span>In no event shall either party's total liability under this Agreement exceed the fees paid in the twelve (12) months preceding the claim, excluding indirect or consequential damages.</span></div>
+          <div class="diff-meta">
+            <div>
+              <div class="diff-meta-label">Why this change</div>
+              <div class="diff-meta-val">Adds a direct-damages cap tied to trailing fees, closing the gap the original clause left open.</div>
+            </div>
+            <div>
+              <div class="diff-meta-label">Source</div>
+              <div class="diff-meta-val">Playbook rule LP-04, Limitation of Liability</div>
+            </div>
+          </div>
+        </div>
+        <div class="diff-actions">
+          <button class="diff-btn primary" id="diff-accept">Accept</button>
+          <button class="diff-btn" id="diff-reject">Reject</button>
+        </div>
+        <div class="diff-history-line" id="diff-history">
+          <span class="diff-history-dot" id="diff-history-dot"></span>
+          <span id="diff-history-text"></span>
+        </div>
+        <p class="diff-note">This is a static illustration of the actual accept/reject/history flow described above, not a live model call.</p>
+      </div>
+
+      <div class="pull-quote reveal delay-2">
+        <p>The right abstraction sometimes only becomes visible on the second rewrite. Moving the redline concept out of the document and into a UI-only state machine became the foundation for every feature built after it.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 TEMPLATES -->
+  <section class="cs-section">
+    <div class="container-inner container">
+      <span class="section-label reveal"><span class="section-num">06</span>Templates</span>
+      <h2 class="section-heading reveal delay-1">Cheap detection first, <em>AI only where it earns its keep.</em></h2>
+      <p class="body-text reveal delay-2">Turning a document into a template means finding every span of text that's specific to <em>this</em> document and should become a fill-in-the-blank field. Detection runs in two passes: a regex pass that catches deterministic patterns instantly and for free, emails, phone numbers, dollar amounts, dates, city and state lines, and an LLM pass that catches what regex structurally can't, person names, company names, job titles, reference numbers. The two are merged, deduplicated, and auto-numbered so the placeholder list reads top to bottom the way the document does.</p>
+
+      <div class="code-label reveal delay-2">server.js, two-pass detection with graceful degradation</div>
+      <div class="code-block reveal delay-2">
+<span class="kw">async function</span> detectPlaceholders(text) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">const</span> regexMatches = runRegexDetectors(text);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">let</span> aiMatches = [];<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">try</span> {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;aiMatches = <span class="kw">await</span> runAiDetector(text);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;} <span class="kw">catch</span> (err) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">// the AI pass failing shouldn't break the whole request,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">// regex matches are still useful on their own</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;console.error(<span class="cm">"AI placeholder detection failed:"</span>, err.message);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return</span> finalizePlaceholders([...regexMatches, ...aiMatches], text);<br>
+}
+      </div>
+
+      <div class="cards-2col reveal delay-2">
+        <div class="insight-card">
+          <div class="insight-card-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 8h8M8 4l4 4-4 4" stroke="var(--accent)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <h3 class="insight-card-title">Document first, dropdown second</h3>
+          <p class="insight-card-body">Opening Fill Template scans the current document for <code>{{PLACEHOLDER}}</code> tokens first. If they're already there, Fill Mode opens immediately using the open document as the source of truth. Only if none are found does the user pick from a saved template list, and filling a blank document versus one with existing content requires explicit confirmation before anything is overwritten.</p>
+        </div>
+        <div class="insight-card">
+          <div class="insight-card-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="5.5" stroke="var(--accent)" stroke-width="1.2"/><path d="M8 5v3l2 1.5" stroke="var(--accent)" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+          <h3 class="insight-card-title">Autofill never overwrites a manual value</h3>
+          <p class="insight-card-body">Template fields can be populated from surrounding document context via <code>/api/autofill-template</code>. The merge order is strict: existing manual value, then AI suggestion, then empty. The interface visibly distinguishes AI-suggested values from fields that still need manual input, and every suggestion stays editable.</p>
+        </div>
+        <div class="insight-card">
+          <div class="insight-card-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M4 9l4 4 4-4" stroke="var(--accent)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <h3 class="insight-card-title">Incremental, not destructive, refills</h3>
+          <p class="insight-card-body">The add-in maintains a mapping between each placeholder and its current value in Word. Clicking Fill again only searches for and replaces fields that actually changed since the last fill, so a user can fix one field and reapply without rebuilding or overwriting the whole document. This state persists in Word document settings, tied to the file itself.</p>
+        </div>
+        <div class="insight-card">
+          <div class="insight-card-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="3" y="3" width="4" height="4" rx="1" stroke="var(--accent)" stroke-width="1.2"/><rect x="9" y="9" width="4" height="4" rx="1" stroke="var(--accent)" stroke-width="1.2" opacity="0.4"/></svg></div>
+          <h3 class="insight-card-title">Readable labels, real tokens underneath</h3>
+          <p class="insight-card-body">Raw tokens like <code>{{SUPPLIER_COMPANY_NAME}}</code> are converted into readable form fields such as "Supplier Company Name," grouped into sections like Parties, Contact, Commercial, and Dates, while the original token stays visible for clarity about what's actually being substituted.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 SHARED EDITING PIPELINE -->
+  <section class="cs-section">
+    <div class="container-inner container">
+      <span class="section-label reveal"><span class="section-num">07</span>Shared Editing Pipeline</span>
+      <h2 class="section-heading reveal delay-1">One editing seam, <em>not five.</em></h2>
+      <p class="body-text reveal delay-2">As the prototype grew, multiple features needed to manipulate Word ranges. Rather than letting each one implement document editing independently, every document mutation now passes through the same <code>applySuggestedChange()</code> function: locate the change, relocate the original clause in the current document, verify the source text still exists, apply the replacement, select the resulting text, and update the stored document location so the change can still be found later.</p>
+
+      <div class="code-label reveal delay-2">taskpane.js, the single editing seam</div>
+      <div class="code-block reveal delay-2">
+<span class="kw">async function</span> applySuggestedChange(changeId) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">const</span> change = findChange(changeId);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">const</span> located = <span class="kw">await</span> locateOriginalClause(change.documentLocation);<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">if</span> (!located) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">// source text no longer exists, refuse to mark this accepted</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return</span> { ok: <span class="kw">false</span>, reason: <span class="cm">"Original clause could not be located."</span> };<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">await</span> Word.run(<span class="kw">async</span> (context) => {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;located.range.insertText(change.suggestedText, Word.InsertLocation.replace);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;located.range.select();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">await</span> context.sync();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;});<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">// only marked accepted after the document operation succeeds</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;change.status = <span class="cm">'accepted'</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;moveToHistory(change);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return</span> { ok: <span class="kw">true</span> };<br>
+}
+      </div>
+
+      <div class="cards-2col reveal delay-2">
+        <div class="insight-card">
+          <div class="insight-card-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l3 3 7-7" stroke="var(--accent)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <h3 class="insight-card-title">Acceptance is earned, not assumed</h3>
+          <p class="insight-card-body">If the original clause has been manually edited or deleted since the suggestion was generated, the system refuses to mark it accepted and reports that the source text couldn't be found, instead of silently applying an edit to the wrong place.</p>
+        </div>
+        <div class="insight-card">
+          <div class="insight-card-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="3" y="5" width="10" height="7" rx="1.5" stroke="var(--accent)" stroke-width="1.2"/><path d="M6 5V4a2 2 0 014 0v1" stroke="var(--accent)" stroke-width="1.2"/></svg></div>
+          <h3 class="insight-card-title">A seam built for what comes next</h3>
+          <p class="insight-card-body">Centralizing every document mutation behind one function means the underlying editing implementation can later be swapped for a true redline or tracked-changes engine without rewriting the Review, Templates, or Changes workflows built on top of it.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 ENGINEERING CHALLENGES -->
+  <section class="cs-section">
+    <div class="container-inner container">
+      <span class="section-label reveal"><span class="section-num">08</span>Engineering Challenges</span>
+      <h2 class="section-heading reveal delay-1">The document is live, <em>not a textarea.</em></h2>
+      <p class="body-text reveal delay-2">The hardest problems in this project weren't calling an LLM. They were deciding how generated output maps back onto a document that keeps changing underneath it.</p>
+
+      <div class="cards-3col reveal delay-2">
+        <div class="insight-card">
+          <div class="insight-card-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="3" y="3" width="10" height="10" rx="1.5" stroke="var(--accent)" stroke-width="1.2"/><path d="M6 8h4" stroke="var(--accent)" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+          <h3 class="insight-card-title">Working with Word, not plain text</h3>
+          <p class="insight-card-body">Selections, ranges, document searches, paragraph insertion, replacement, and cursor movement all had to account for a document that can change between generation and application, not a static string.</p>
+        </div>
+        <div class="insight-card">
+          <div class="insight-card-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="5.5" stroke="var(--accent)" stroke-width="1.2"/><path d="M8 5v3l2 2" stroke="var(--accent)" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+          <h3 class="insight-card-title">Maintaining document location</h3>
+          <p class="insight-card-body">AI suggestions can stay visible long after the user's cursor has moved elsewhere. Results retain the source text that generated them and attempt to relocate it when an action is later performed, rather than trusting the current selection.</p>
+        </div>
+        <div class="insight-card">
+          <div class="insight-card-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 8h8M8 4l4 4-4 4" stroke="var(--accent)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <h3 class="insight-card-title">Making AI output deterministic enough for UI</h3>
+          <p class="insight-card-body">Raw model responses are difficult to build reliable interfaces around. Summarize and Review both structure output into predictable fields so the frontend can render summaries, severities, recommendations, and playbook references as real product components, not chat text.</p>
+        </div>
+        <div class="insight-card">
+          <div class="insight-card-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l3 3 7-7" stroke="var(--accent)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <h3 class="insight-card-title">Separating generation from mutation</h3>
+          <p class="insight-card-body">The single most important architectural decision in the project: "the AI thinks this should change" is not the same event as "change the document." The suggested-changes queue is the approval boundary between them.</p>
+        </div>
+        <div class="insight-card">
+          <div class="insight-card-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="3" y="3" width="4" height="4" rx="1" stroke="var(--accent)" stroke-width="1.2"/><rect x="9" y="9" width="4" height="4" rx="1" stroke="var(--accent)" stroke-width="1.2" opacity="0.4"/></svg></div>
+          <h3 class="insight-card-title">Preserving user control</h3>
+          <p class="insight-card-body">AI-generated values and revisions remain editable or rejectable everywhere in the product. Autofill preserves manual entries, findings require an explicit revision request, and revisions require explicit approval before touching the document.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 09 STACK -->
+  <section class="cs-section">
+    <div class="container-inner container">
+      <span class="section-label reveal"><span class="section-num">09</span>Stack</span>
+      <h2 class="section-heading reveal delay-1">What it's <em>built with.</em></h2>
+      <p class="body-text reveal delay-2">The task-pane UI, the Word Object Model integration, the Express proxy, every prompt, and the suggested-changes state machine were all written directly, with the Claude API handling language understanding and generation.</p>
+      <div class="stack-row reveal delay-2">
+        <span class="stack-pill">Node.js</span>
+        <span class="stack-pill">Express</span>
+        <span class="stack-pill">Office.js</span>
+        <span class="stack-pill">Claude API</span>
+        <span class="stack-pill">JavaScript</span>
+        <span class="stack-pill">HTML / CSS</span>
+        <span class="stack-pill">OOXML / Word Object Model</span>
+      </div>
+
+      <div class="scope-note reveal delay-2">
+        <span class="scope-note-label">Current prototype scope</span>
+        <p>This is an independently developed prototype, not a production deployment. Summarize, Rewrite, Simplify, Review, Templates, and the suggested-changes workflow all have functional Word integration. A few actions visible in the interface, proofreading, translation, anonymization, and standalone clause drafting, currently use prototype or mock behavior rather than complete backend workflows, and a full persistent redline visualization inside the document is an intended next step rather than something already built.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 REFLECTION -->
+  <section class="cs-section">
+    <div class="container-inner container">
+      <span class="section-label reveal"><span class="section-num">10</span>Reflection</span>
+      <h2 class="section-heading reveal delay-1">What I <em>took away.</em></h2>
+
+      <div class="cards-3col">
+        <div class="reflect-card reveal delay-1">
+          <span class="reflect-icon">&#128274;</span>
+          <h4 class="reflect-title">Silent failures are worse than crashes</h4>
+          <p class="reflect-body">This is especially true in high-stakes tools. A parsing failure that quietly returns an empty result is more dangerous than one that visibly errors, because the user has no signal anything went wrong. It shaped how every endpoint handles malformed model output.</p>
+        </div>
+        <div class="reflect-card reveal delay-2">
+          <span class="reflect-icon">&#127919;</span>
+          <h4 class="reflect-title">Narrow scope made the AI trustworthy</h4>
+          <p class="reflect-body">Review never rewrites. Rewrite never explains. Simplify never redrafts. Enforcing that boundary in the prompt and the response schema made each tool's output predictable enough to actually rely on, instead of double-checking whether "summarize" secretly changed a meaning somewhere.</p>
+        </div>
+        <div class="reflect-card reveal delay-3">
+          <span class="reflect-icon">&#127959;&#65039;</span>
+          <h4 class="reflect-title">The right abstraction can take a rewrite to find</h4>
+          <p class="reflect-body">The first version of document editing, mutate immediately, seemed reasonable until it broke under real interruption. The fix wasn't a patch. It was moving generation and mutation apart entirely, which became the foundation everything else was built on.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEXT PROJECT -->
+  <div class="next-project">
+    <p class="next-label reveal">Next project</p>
+    <h2 class="next-title reveal delay-1">ICU Mortality Prediction</h2>
+    <a href="icu-mortality.html" class="next-link reveal delay-2">
+      View case study
+      <span class="next-link-arrow">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+    </a>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="foot-inner">
+      <p class="foot-name">Mahima Shah</p>
+      <p class="foot-sub">always learning</p>
+      <ul class="foot-links">
+        <li><a href="mailto:mahima@mahimashah.xyz">Email</a></li>
+        <li><a href="https://www.linkedin.com/in/shahmahima/" target="_blank" rel="noopener">LinkedIn</a></li>
+        <li><a href="https://x.com/mahimashahh" target="_blank" rel="noopener">X</a></li>
+        <li><a href="https://github.com/mahima-shah" target="_blank" rel="noopener">GitHub</a></li>
+        <li><a href="https://www.youtube.com/@mahimashah" target="_blank" rel="noopener">YouTube</a></li>
+      </ul>
+      <p class="foot-copy">2025 Mahima Shah &nbsp;&middot;&nbsp; Designed with intention</p>
+    </div>
+  </footer>
+
+</div>
+<script>
+  // Scroll reveal
+  var revEls = document.querySelectorAll('.reveal');
+  revEls.forEach(function(el) {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+  });
+  requestAnimationFrame(function() {
+    requestAnimationFrame(function() {
+      revEls.forEach(function(el) {
+        el.style.transition = 'opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1)';
+      });
+      if (!('IntersectionObserver' in window)) {
+        revEls.forEach(function(el) { el.style.opacity='1'; el.style.transform='none'; });
+        return;
+      }
+      var io = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) {
+          if (e.isIntersecting) {
+            e.target.style.opacity = '1';
+            e.target.style.transform = 'none';
+            io.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.06, rootMargin: '0px 0px -40px 0px' });
+      revEls.forEach(function(el) { io.observe(el); });
+    });
+  });
+
+  // Orange dot cursor
+  var dot = document.getElementById('cdot');
+  if (dot && window.matchMedia('(pointer: fine)').matches) {
+    var active = false;
+    document.addEventListener('mousemove', function(e) {
+      dot.style.left = e.clientX + 'px';
+      dot.style.top  = e.clientY + 'px';
+      if (!active) {
+        active = true;
+        dot.style.opacity = '1';
+        document.body.classList.add('has-cursor');
+      }
+    }, {passive:true});
+    document.querySelectorAll('a, button, .card, .pill, .exp-tab').forEach(function(el) {
+      el.addEventListener('mouseenter', function() { dot.classList.add('expand'); });
+      el.addEventListener('mouseleave', function() { dot.classList.remove('expand'); });
+    });
+  }
+
+  // Typewriter heading reveal
+  (function(){
+    var el = document.querySelector('.cs-title');
+    if (!el) return;
+    var text = el.textContent;
+    el.setAttribute('aria-label', text);
+    el.innerHTML = '<span class="tw-text" aria-hidden="true"></span><span class="tw-cursor" aria-hidden="true"></span>';
+    var textSpan = el.querySelector('.tw-text');
+    var cursor = el.querySelector('.tw-cursor');
+    var started = false;
+    function type(){
+      if (started) return;
+      started = true;
+      var i = 0, speed = 46;
+      (function step(){
+        textSpan.textContent = text.slice(0, i);
+        i++;
+        if (i <= text.length) {
+          setTimeout(step, speed);
+        } else {
+          setTimeout(function(){ cursor.classList.add('tw-cursor-fade'); }, 850);
+        }
+      })();
+    }
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){ if (e.isIntersecting) { type(); io.unobserve(el); } });
+      }, {threshold:0.3});
+      io.observe(el);
+    } else {
+      textSpan.textContent = text;
+    }
+  })();
+
+  // Feature explorer tabs
+  (function(){
+    var tabs = document.querySelectorAll('#feature-tabs .exp-tab');
+    var panels = document.querySelectorAll('.exp-panel');
+    tabs.forEach(function(tab){
+      tab.addEventListener('click', function(){
+        tabs.forEach(function(t){ t.classList.remove('active'); });
+        panels.forEach(function(p){ p.classList.remove('active'); });
+        tab.classList.add('active');
+        var target = document.querySelector('.exp-panel[data-panel="' + tab.getAttribute('data-feature') + '"]');
+        if (target) target.classList.add('active');
+      });
+    });
+  })();
+
+  // Interactive suggested-change demo
+  (function(){
+    var statusEl = document.getElementById('diff-status');
+    var acceptBtn = document.getElementById('diff-accept');
+    var rejectBtn = document.getElementById('diff-reject');
+    var historyLine = document.getElementById('diff-history');
+    var historyDot = document.getElementById('diff-history-dot');
+    var historyText = document.getElementById('diff-history-text');
+    if (!statusEl || !acceptBtn || !rejectBtn) return;
+
+    function resolve(state){
+      acceptBtn.disabled = true;
+      rejectBtn.disabled = true;
+      statusEl.classList.remove('pending');
+      var now = new Date();
+      var stamp = now.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+      if (state === 'accepted') {
+        statusEl.textContent = 'Accepted';
+        statusEl.classList.add('accepted');
+        historyDot.classList.remove('rej');
+        historyText.textContent = 'Moved to History, accepted at ' + stamp + '. Document updated.';
+      } else {
+        statusEl.textContent = 'Rejected';
+        statusEl.classList.add('rejected');
+        historyDot.classList.add('rej');
+        historyText.textContent = 'Moved to History, rejected at ' + stamp + '. Document unchanged.';
+      }
+      historyLine.classList.add('show');
+    }
+
+    acceptBtn.addEventListener('click', function(){ resolve('accepted'); });
+    rejectBtn.addEventListener('click', function(){ resolve('rejected'); });
+  })();
+</script>
+</body>
+</html>
